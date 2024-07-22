@@ -1,4 +1,7 @@
 import type { CheckinType, Participante } from "@/models/checkin";
+import { API } from "@/services";
+import type { Participant } from "@/services/participants/types";
+import type { AxiosError } from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -146,10 +149,44 @@ export const useCheckinStore = defineStore('checkin', () =>{
     }
   ]);
 
+  const participants = ref<Participant[]>([])
+
   const getParticipantesByTypeCheckin = (typeCheckin: CheckinType): Participante[] => {
     return participantes.value.filter(participante => participante.typeCheckin === typeCheckin);
   };
 
-  return { getParticipantesByTypeCheckin }
+  const initParticipants = (data: Participant[]) =>{
+    participants.value = data
+  }
+
+  const dispatchGetParticipants = async () =>{
+    try{
+      const { status, data } = await API.participants.getAllParticipants();
+      if(status == 200){
+        console.log(data)
+        initParticipants(data)
+        return {
+          success: true,
+          content: null
+        }
+      }
+    }catch(error){
+      const _error = error as AxiosError<string>;
+      return {
+        success: false,
+        status: _error.response?.status,
+        content: null,
+      };
+    }
+
+    return {
+      success: false,
+      content: null,
+      status: 400,
+    };
+
+  }
+
+  return { participants, getParticipantesByTypeCheckin, initParticipants, dispatchGetParticipants }
 
 })

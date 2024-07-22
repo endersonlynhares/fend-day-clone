@@ -3,10 +3,20 @@ import { RouterLink, RouterView } from 'vue-router'
 import HeaderComponent from './components/HeaderComponent.vue';
 import FooterComponent from './components/FooterComponent.vue';
 import { inject, onMounted } from 'vue';
+import { useCheckinStore } from './stores/checkin';
 
-onMounted(() =>{
+const checkinStore = useCheckinStore()
+
+onMounted(async () =>{
+  const { success, status } = await checkinStore.dispatchGetParticipants()
+
+  if (!success) {
+    alert("Ups, something happened 🙂");
+    console.log("Api status ->", status);
+  }
 
 })
+
 </script>
 
 <template>
