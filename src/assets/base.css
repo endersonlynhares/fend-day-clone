@@ -1,0 +1,28 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --color-background: #0F0F0F;
+  --color-text: #FFFFFF;
+  --purple-700: #832BD8;
+  --purple-900: #561d8b;
+  --black: #000;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+*, html, body, input, button {
+  font-family: Poppins;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: Poppins;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+}
